@@ -170,7 +170,8 @@ st.subheader("5. Partea forțată: Minimul Hidro")
 st.markdown("❓ **Întrebare EDA:** *Există un prag de eolian + solar peste care hidro merge la minim?*")
 
 df['Interval_SRE'] = pd.cut(df['SRE'], bins=np.arange(0, 5500, 500))
-minim_hidro = df.groupby('Interval_SRE')['Ape'].quantile(0.05).reset_index()
+# Am adăugat observed=True și dropna() pentru a elimina intervalele goale care stricau graficul
+minim_hidro = df.groupby('Interval_SRE', observed=True)['Ape'].quantile(0.05).reset_index().dropna()
 minim_hidro['Interval_SRE'] = minim_hidro['Interval_SRE'].astype(str)
 
 valoare_minim_absolut = minim_hidro['Ape'].min()
@@ -184,9 +185,8 @@ st.plotly_chart(fig_prag, use_container_width=True)
 
 st.info(f"""
 **Ce ne spun datele:**
-Da, există o limită clară. Când avem foarte mult vânt și soare pe rețea (peste 1500 - 2000 MW), scăderea producției hidro se aplatizează, stabilizându-se în jurul valorii de 530 MW (atingând un minim absolut de 430 MW doar la valori extreme ale SRE). E normal, pentru că barajele nu pot fi oprite de tot — e nevoie să curgă un debit de apă pe râuri și să păstrăm un minim de rezerve de siguranță pentru stabilitatea rețelei electrice.""")
-
-st.divider()
+Da, există o limită clară. Când avem foarte mult vânt și soare pe rețea (peste 1500 - 2000 MW), scăderea producției hidro se aplatizează, stabilizându-se în jurul valorii de 530 MW (atingând un minim absolut de {valoare_minim_absolut:.0f} MW doar la valori extreme ale SRE). E normal, pentru că barajele nu pot fi oprite de tot — e nevoie să curgă un debit de apă pe râuri și să păstrăm un minim de rezerve de siguranță pentru stabilitatea rețelei electrice.
+""")
 
 # --- 6. ROLURI ÎN SISTEM: RAMPE VS. BANDĂ ---
 st.subheader("6. Împărțirea rolurilor: Rampe rapide (Hidro) vs. Bandă (Gaz)")
