@@ -30,7 +30,7 @@ df = load_data()
 
 with st.sidebar:
     st.header("📊 Despre Setul de Date")
-    st.info("Datele reprezintă producția de energie electrică din Sistemul Energetic Național (SEN), cu rezoluție de 15 minute.")
+    st.info("Datele reprezintă producția de energie electrică din Sistemul Energetic Național (SEN).")
     st.write(f"**Început:** {df.index.min().strftime('%d %b %Y')}")
     st.write(f"**Sfârșit:** {df.index.max().strftime('%d %b %Y')}")
     st.write("**Sursa:** Transelectrica")
@@ -45,7 +45,7 @@ def apply_dark_mode_tweaks(fig):
     return fig
 
 
-# --- 1. CORELAȚIE (SCATTER) --- .
+# --- 1. CORELAȚIE (SCATTER) ---
 st.subheader("1. Rolul de echilibrare: Hidro vs. SRE")
 
 col1, col2 = st.columns([2, 1])
@@ -76,7 +76,11 @@ st.subheader("2. Dinamica intrazilnică (Serii Suprapuse pe o săptămână)")
 
 st.markdown("❓ **Întrebare EDA:** *Urmează hidro forma intrazilnică a solarului — scade la prânz (când solarul e maxim) și crește dimineața/seara?*")
 
-df_saptamana = df.head(672)
+
+data_start = df.index.min()
+data_stop = data_start + pd.Timedelta(days=7)
+df_saptamana = df[(df.index >= data_start) & (df.index < data_stop)]
+
 fig_linii = px.line(
     df_saptamana, y=['Ape', 'SRE', 'Foto'],
     labels={'value': 'Producție [MW]', 'Data': 'Timp', 'variable': 'Sursa'}
@@ -189,7 +193,7 @@ st.subheader("6. Împărțirea rolurilor: Rampe rapide (Hidro) vs. Bandă (Gaz)"
 
 st.markdown("❓ **Întrebare EDA:** *Cum se împart rolurile între hidro și hidrocarburi (gaz) în acoperirea sarcinii reziduale — care preia rampele rapide și care banda?*")
 
-# Creăm un grafic cu evoluția pe o săptămână doar pentru Ape și Hidrocarburi
+
 fig_roluri = px.line(
     df_saptamana, y=['Ape', 'Hidrocarburi'],
     color_discrete_map={'Ape': '#1f77b4', 'Hidrocarburi': '#d62728'},
