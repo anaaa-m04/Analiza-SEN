@@ -25,6 +25,13 @@ def load_data():
 
 df = load_data()
 
+with st.sidebar:
+    st.header("📊 Despre Setul de Date")
+    st.info("Datele reprezintă producția de energie electrică din Sistemul Energetic Național (SEN), cu rezoluție de 15 minute.")
+    st.write(f"**Început:** {df.index.min().strftime('%d %b %Y')}")
+    st.write(f"**Sfârșit:** {df.index.max().strftime('%d %b %Y')}")
+    st.write("**Sursa:** Transelectrica")
+
 
 def apply_dark_mode_tweaks(fig):
     fig.update_layout(
