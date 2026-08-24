@@ -129,7 +129,7 @@ Dacă ne uităm la linia albastră (zile cu mult vânt și soare) și cea roșie
 
 st.divider()
 
-# --- 4. VITEZA DE RAMPARE ---
+# --- 4. VITEZA DE RAMPARE --
 st.subheader("4. Viteza de rampare la căderile bruște de eolian")
 
 df['Rampa_Eolian'] = df['Eolian'].diff()
