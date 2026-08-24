@@ -18,6 +18,9 @@ def load_data():
     df['Data'] = pd.to_datetime(df['Data'], dayfirst=True)
     df = df.set_index('Data')
     df = df.sort_index()
+
+    df = df[df.index.year == 2025]
+
     df.columns = [col.split('[')[0].strip() for col in df.columns]
     df['SRE'] = df['Eolian'] + df['Foto']
     return df
