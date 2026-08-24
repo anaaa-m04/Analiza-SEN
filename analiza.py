@@ -42,7 +42,7 @@ def apply_dark_mode_tweaks(fig):
     return fig
 
 
-# --- 1. CORELAȚIE (SCATTER) ---
+# --- 1. CORELAȚIE (SCATTER) --- .
 st.subheader("1. Rolul de echilibrare: Hidro vs. SRE")
 
 col1, col2 = st.columns([2, 1])
